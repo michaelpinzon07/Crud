@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Cargos</title>
+    <link rel="stylesheet" href="https://bootswatch.com/4/lux/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 56px;
+        }
+        .container {
+            margin-top: 30px;
+        }
+        .card {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a href="/" class="navbar-brand">Gestión de Cargos</a>
+        </div>
+    </nav>
+
+    
+        
+
+            <div class="col-md-5">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Agregar Nuevo Empleado</h5>
+                    </div>
+                    <div class="card-body">
+                        <form action="/updateempleados/<%= empleados.id %>"method="post">
+                            <div class="form-group">
+                                <label for="nombre">Nombre</label>
+                                <input type="text" name="nombres" id="nombres" class="form-control" placeholder="Nombre del empleado" >
+                            </div>
+                            <div class="form-group">
+                                <label for="apellido">Apellido</label>
+                                <input type="text" name="apellidos" id="apellidos" class="form-control" placeholder="Apellido del empleado" >
+                            </div>
+                            <div class="form-group">
+                                <label for="identificacion">Identificacion</label>
+                                <input type="number" name="identificacion" id="identificacion" class="form-control" placeholder="Identificacion" >
+                            </div>
+                            <div class="form-group">
+                                <label for="localizacion_id">Localizacion_id</label>
+                                <input type="number" name="localizacion_id" id="localizacion_id" class="form-control" placeholder="localizacion_id" >
+                            </div>
+                            <div class="form-group">
+                                <label for="cargo_id">cargo_id</label>
+                                <input type="number" name="cargo_id" id="cargo_id" class="form-control" placeholder="cargo_id" >
+                            </div>
+
+                            <div class="form-group form-check">
+                                <input type="checkbox" name="activo" id="activo" class="form-check-input" value="1">
+                                <label for="activo" class="form-check-label">Activo</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Editar Empleado</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+      
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Localización</title>
+    <link rel="stylesheet" href="https://bootswatch.com/4/lux/bootstrap.min.css">
+</head>
+<body>
+
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container">
+            <a href="/" class="navbar-brand">Crud</a>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Editar Localización</h4>
+                        <form action="/update/<%= localizacion.id %>" method="post">
+                            <div class="form-group">
+                                <label for="localizacion">Localización</label>
+                                <input type="text" name="localizacion" id="localizacion" class="form-control" value="<%= localizacion.localizacion %>" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="activo">Activo</label>
+                                <input type="checkbox" name="activo" id="activo" value="1" <%= localizacion.activo ? 'checked' : '' %>>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Actualizar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página con Botones Centrados</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <nav>
+        <form action="logout" method="get" class="logout-form">
+            <button type="submit" class="btn-danger">Cerrar sesión</button>
+        </form>
+    </nav>
+    <div class="container">
+        <div class="button-container">
+            <a href="crud_localizaciones" class="button">Crud de localizaciones</a>
+            <a href="crud_cargos" class="button">Crud de cargos</a>
+            <a href="crud_empleados" class="button">Crud de Empleados</a>
+            <a href="crud_listado" class="button">Listado</a>
+        </div>
+    </div>
+</body>
+
+<style>
+
+body {
+    font-family: Arial, sans-serif;
+    background-color:#19033c ;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: relative; /* Asegura que el contenedor del botón de logout esté posicionado en relación con el body */
+}
+
+nav {
+    position: absolute; /* Permite que el formulario se posicione en relación con el body */
+    top: 0;
+    right: 0;
+    padding: 20px; /* Espacio alrededor del botón */
+}
+
+.logout-form {
+    margin: 0;
+}
+
+.button-container {
+    display: flex;
+    gap: 20px; /* Espacio entre botones */
+}
+
+.button {
+    display: inline-block;
+    padding: 20px 40px; /* Tamaño grande */
+    font-size: 24px; /* Tamaño de texto grande */
+    color: #ffffff;
+    background-color: #007bff;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.3s, transform 0.3s;
+    text-align: center;
+    min-width: 150px; /* Ancho mínimo para los botones */
+}
+
+.button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.button:active {
+    transform: scale(0.98);
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+</style>
+</html>

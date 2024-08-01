@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://bootswatch.com/4/lux/bootstrap.min.css">
+    <style>
+        thead th {
+            background-color: #343a40; /* Color de fondo oscuro (gris oscuro) */
+            color: white; /* Color de texto blanco */
+        }
+
+        h2{
+            color: white;
+        }
+
+        
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container">
+            <h2>Crud de Localizaciones</h2>
+            <a href="cruds" class="navbar-brand">Regresar</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-md-7">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Localizacion</th>
+                            <th>Activo</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% localizaciones.forEach(function(localizacion) { %>
+                            <tr>
+                                <td><%= localizacion.id %></td>
+                                <td><%= localizacion.localizacion %></td>
+                                <td><%= localizacion.activo ? 'Sí' : 'No' %></td>
+                                <td>
+                                    
+                                    <a href="/edit/<%= localizacion.id %>" class="btn btn-warning btn-sm">Editar</a>
+                                    <a href="/delete/<%= localizacion.id %>" class="btn btn-danger btn-sm">Eliminar</a>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-md-5">
+                <div class="card">
+                    <div class="card-body">
+                        <form action="/crud_localizaciones" method="post">
+                            <div class="formulario">
+                                <input type="text" name="localizacion" id="localizacion" placeholder="localizacion" required>
+                                <label for="activo">Activo</label>
+                                <input type="checkbox" name="activo" id="activo" value="1">
+                                <button type="submit" class="btn btn-primary">Insertar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+
+    
+</html>

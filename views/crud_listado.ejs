@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://bootswatch.com/4/lux/bootstrap.min.css">
+    <style>
+        thead th {
+            background-color: #343a40; /* Color de fondo oscuro (gris oscuro) */
+            color: white; /* Color de texto blanco */
+        }
+
+        h2{
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container">
+            <h2>Listado</h2>
+            <a href="cruds" class="navbar-brand">Regresar</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+        
+                            <th>Nombres</th>
+                            <th>Apellidos</th>
+                            <th>Identificacion</th>
+                            <th>Localizacion</th>
+                            <th>Cargo</th>
+                            <th>Activo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% listados.forEach(function(listado) { %>
+                            <tr>
+                                
+                                <td><%= listado.nombres %></td>
+                                <td><%= listado.apellidos %></td>
+                                <td><%= listado.identificacion %></td>
+                                <td><%= listado.localizacion %></td>
+                                <td><%= listado.cargo %></td>
+                                <td><%= listado.activo ? 'Sí' : 'No' %></td>
+                                
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+
+    
+</html>

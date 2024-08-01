@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Cargos</title>
+    <link rel="stylesheet" href="https://bootswatch.com/4/lux/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 56px;
+        }
+        .container {
+            margin-top: 30px;
+        }
+        .card {
+            margin-bottom: 20px;
+        }
+
+        table{
+            margin-top:50px;
+        }
+
+        thead th {
+            background-color: #343a40; /* Color de fondo oscuro (gris oscuro) */
+            color: white; /* Color de texto blanco */
+        }
+        h2{
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <h2>Crud de Empleados</h2>
+            <a href="cruds" class="navbar-brand">Regresar</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row mt-10">
+            <div class="col-md-11.5">
+                    <div class="card-body">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombres</th>
+                                    <th>Apellidos</th>
+                                    <th>Identificacion</th>
+                                    <th>Localizacion_id</th>
+                                    <th>Cargo_id</th>
+                                    <th>active</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% empleados.forEach(function(empleado) { %>
+                                    <tr>
+                                        <td><%= empleado.id %></td>
+                                        <td><%= empleado.nombres %></td>
+                                        <td><%= empleado.apellidos %></td>
+                                        <td><%= empleado.identificacion %></td>
+                                        <td><%= empleado.localizacion_id %></td>
+                                        <td><%= empleado.cargo_id %></td>
+                                        <td><%= empleado.activo ? 'Sí' : 'No' %></td>
+                                        <td>
+                                            <a href="/editempleados/<%= empleado.id %>" class="btn btn-warning btn-sm">Editar</a>
+                                            <a href="/deleteempleados/<%= empleado.id %>" class="btn btn-danger btn-sm">Eliminar</a>
+                                        </td>
+                                    </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            
+
+            <div class="col-md-5">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Agregar Nuevo Empleado</h5>
+                    </div>
+                    <div class="card-body">
+                        <form action="/crud_empleados" method="post">
+                            <div class="form-group">
+                                <label for="nombre">Nombre</label>
+                                <input type="text" name="nombres" id="nombres" class="form-control" placeholder="Nombre del empleado" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="apellido">Apellido</label>
+                                <input type="text" name="apellidos" id="apellidos" class="form-control" placeholder="Apellido del empleado" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="identificacion">Identificacion</label>
+                                <input type="number" name="identificacion" id="identificacion" class="form-control" placeholder="Identificacion" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="localizacion_id">Localizacion_id</label>
+                                <input type="number" name="localizacion_id" id="localizacion_id" class="form-control" placeholder="localizacion_id" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="cargo_id">cargo_id</label>
+                                <input type="number" name="cargo_id" id="cargo_id" class="form-control" placeholder="cargo_id" required>
+                            </div>
+
+                            <div class="form-group form-check">
+                                <input type="checkbox" name="active" id="active" class="form-check-input" value="1">
+                                <label for="active" class="form-check-label">Activo</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Agregar Empleado</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
