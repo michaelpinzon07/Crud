@@ -117,3 +117,8 @@ h1{
 h2{
     color: white;
 }
+
+a {
+    text-decoration: none; /* Elimina el subrayado de los enlaces */
+}
+

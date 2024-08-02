@@ -1,5 +1,9 @@
+
+// se importa express y se crea una instancia de la aplicacion
 const express = require("express");
 const app = express();
+
+
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -24,7 +28,7 @@ app.use(session({
 
 
 
-
+// Rutas
 
 app.get("/", (req, res) => {
     res.render("index");
@@ -42,6 +46,9 @@ app.get("/cruds",isAuthenticated, (req, res) => {
     res.render("cruds");
 });
 
+
+
+// autenticar usuario
 function isAuthenticated(req, res, next) {
     if (req.session.user) {
         return next();
@@ -408,6 +415,9 @@ app.post("/updateempleados/:id", (req, res) => {
     });
 });
 
+
+
+// CRUD ------ LISTADO
 
 app.get("/crud_listado",isAuthenticated, (req, res) => {
 
