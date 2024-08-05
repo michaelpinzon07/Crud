@@ -116,24 +116,61 @@ app.post("/auth", async (req, res) => {
 app.post("/register", async (req, res) => {
     const user = req.body.user;
     const password = req.body.password;
-    let passwordHash = await bcryptjs.hash(password, 8);
-    conection.query("INSERT INTO usuarios SET ?", { user: user, password: passwordHash }, (error, results) => {
+    
+    // Verifica si el usuario ya existe
+    conection.query("SELECT * FROM usuarios WHERE user = ?", [user], async (error, results) => {
         if (error) {
             console.log(error);
-        } else {
             res.render("register", {
                 alert: true,
-                alertTitle: "Registration",
-                alertMessage: "Registration successful",
-                alertIcon: "success",
+                alertTitle: "Error",
+                alertMessage: "An error occurred while checking the user",
+                alertIcon: "error",
                 showconfirmButton: false,
                 timer: 1500,
                 ruta: ""
             });
+        } else if (results.length > 0) {
+            // Usuario ya existe
+            res.render("register", {
+                alert: true,
+                alertTitle: "Registration",
+                alertMessage: "Usuario ya existe",
+                alertIcon: "error",
+                showconfirmButton: false,
+                timer: 1500,
+                ruta: "register"
+            });
+        } else {
+            // Usuario no existe, procede con la inserción
+            let passwordHash = await bcryptjs.hash(password, 8);
+            conection.query("INSERT INTO usuarios SET ?", { user: user, password: passwordHash }, (error, results) => {
+                if (error) {
+                    console.log(error);
+                    res.render("register", {
+                        alert: true,
+                        alertTitle: "Error",
+                        alertMessage: "An error occurred while registering the user",
+                        alertIcon: "error",
+                        showconfirmButton: false,
+                        timer: 1500,
+                        ruta: ""
+                    });
+                } else {
+                    res.render("register", {
+                        alert: true,
+                        alertTitle: "Registration",
+                        alertMessage: "Registration successful",
+                        alertIcon: "success",
+                        showconfirmButton: false,
+                        timer: 1500,
+                        ruta: ""
+                    });
+                }
+            });
         }
     });
 });
-
 
 
 
@@ -321,23 +358,57 @@ app.post("/updatecargo/:id", (req, res) => {
 
 
 //mostrar empleados
+app.get("/crud_empleados", isAuthenticated, (req, res) => {
+    const sqlEmpleados = `
+        SELECT 
+            e.id,
+            e.nombres,
+            e.apellidos,
+            e.identificacion,
+            l.localizacion AS localizacion,
+            c.cargo AS cargo,
+            e.active
+        FROM 
+            empleados e
+        JOIN 
+            localizaciones l ON e.localizacion_id = l.id
+        JOIN 
+            campos c ON e.cargo_id = c.id
+    `;
 
-app.get("/crud_empleados",isAuthenticated, (req, res) => {
-    conection.query("SELECT * FROM empleados", (error, results) => {
-        if (error) {
-            console.error("Error al consultar la base de datos:", error);
+    const sqlLocalizaciones = "SELECT * FROM localizaciones";
+    const sqlCargos = "SELECT * FROM campos";
+
+    conection.query(sqlEmpleados, (errorEmpleados, resultsEmpleados) => {
+        if (errorEmpleados) {
+            console.error("Error al consultar la base de datos:", errorEmpleados);
             res.render("crud_empleados", {
-                empleados: [] // Pasar un array vacío en caso de error
+                empleados: [],
+                localizaciones: [],
+                cargos: []
             });
         } else {
-            
-            res.render("crud_empleados", {
-                
-                empleados: results // Pasar los resultados de la consulta
+            conection.query(sqlLocalizaciones, (errorLocalizaciones, resultsLocalizaciones) => {
+                if (errorLocalizaciones) {
+                    console.error("Error al consultar localizaciones:", errorLocalizaciones);
+                }
+
+                conection.query(sqlCargos, (errorCargos, resultsCargos) => {
+                    if (errorCargos) {
+                        console.error("Error al consultar cargos:", errorCargos);
+                    }
+
+                    res.render("crud_empleados", {
+                        empleados: resultsEmpleados,
+                        localizaciones: resultsLocalizaciones,
+                        cargos: resultsCargos
+                    });
+                });
             });
         }
     });
 });
+
 
 // Insertar empleados (POST)
 
@@ -381,31 +452,50 @@ app.get("/deleteempleados/:id", (req, res) => {
 app.get("/editempleados/:id", (req, res) => {
     const id = req.params.id;
 
-    // Consultar la base de datos para obtener la localización con el id proporcionado
-    conection.query("SELECT * FROM empleados WHERE id = ?", [id], (error, results) => {
+    // Consulta para obtener el empleado
+    conection.query(`
+        SELECT e.*, l.localizacion, c.cargo
+        FROM empleados e
+        JOIN localizaciones l ON e.localizacion_id = l.id
+        JOIN campos c ON e.cargo_id = c.id
+        WHERE e.id = ?`, [id], (error, results) => {
         if (error) {
             console.error("Error al consultar la base de datos:", error);
-            res.redirect("/crud_empleados"); // Redirigir en caso de error
+            res.redirect("/crud_empleados");
         } else if (results.length === 0) {
-            res.redirect("/crud_empleados"); // Redirigir si no se encuentra la localización
+            res.redirect("/crud_empleados");
         } else {
-            res.render("edit_empleados", {
-                empleados: results[0] // Pasar el resultado al formulario de edición
+            // Consulta para obtener las localizaciones y cargos
+            conection.query("SELECT * FROM localizaciones", (locError, localizaciones) => {
+                if (locError) {
+                    console.error("Error al consultar las localizaciones:", locError);
+                }
+                conection.query("SELECT * FROM campos", (carError, cargos) => {
+                    if (carError) {
+                        console.error("Error al consultar los cargos:", carError);
+                    }
+                    res.render("edit_empleados", {
+                        empleado: results[0],
+                        localizaciones: localizaciones,
+                        cargos: cargos
+                    });
+                });
             });
         }
     });
 });
 
 
+
 // Actualizar empleados
 
 app.post("/updateempleados/:id", (req, res) => {
-
     const id = req.params.id;
-    const { nombres, apellidos, identificacion, localizacion_id, cargo_id } = req.body;
+    const { nombres, apellidos, identificacion, localizacion_id, cargo_id, active } = req.body;
 
-    // Actualizar la localización con el id proporcionado
-    conection.query("UPDATE empleados SET nombres = ?, apellidos = ?, identificacion = ?, localizacion_id = ?, cargo_id = ? WHERE id = ?", [nombres, apellidos, identificacion, localizacion_id, cargo_id, id], (error, results) => {
+    // Actualizar la información del empleado con el id proporcionado
+    conection.query("UPDATE empleados SET nombres = ?, apellidos = ?, identificacion = ?, localizacion_id = ?, cargo_id = ?, active = ? WHERE id = ?", 
+    [nombres, apellidos, identificacion, localizacion_id, cargo_id, active ? 1 : 0, id], (error, results) => {
         if (error) {
             console.error("Error al actualizar el registro:", error);
             res.redirect("/crud_empleados"); // Redirigir en caso de error

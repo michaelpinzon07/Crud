@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Cargos</title>
+    <title>Editar Empleado</title>
     <link rel="stylesheet" href="https://bootswatch.com/4/lux/bootstrap.min.css">
     <style>
         body {
@@ -14,6 +14,7 @@
         }
         .card {
             margin-bottom: 20px;
+            
         }
     </style>
 </head>
@@ -21,53 +22,61 @@
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-        <div class="container">
-            <a href="/" class="navbar-brand">Gestión de Cargos</a>
-        </div>
+        
     </nav>
 
-    
-        
+    <div class="container">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Editar Empleado</h5>
+                </div>
+                <div class="card-body">
+                    <form action="/updateempleados/<%= empleado.id %>" method="post">
+                        <div class="form-group">
+                            <label for="nombres">Nombre</label>
+                            <input type="text" name="nombres" id="nombres" class="form-control" value="<%= empleado.nombres %>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="apellidos">Apellido</label>
+                            <input type="text" name="apellidos" id="apellidos" class="form-control" value="<%= empleado.apellidos %>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="identificacion">Identificación</label>
+                            <input type="number" name="identificacion" id="identificacion" class="form-control" value="<%= empleado.identificacion %>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="localizacion_id">Localización</label>
+                            <select name="localizacion_id" id="localizacion_id" class="form-control" required>
+                                <!-- Aquí debes generar las opciones en el servidor -->
+                                <!-- Suponiendo que has pasado localizaciones a la vista -->
+                                <% localizaciones.forEach(function(localizacion) { %>
+                                    <option value="<%= localizacion.id %>" <%= empleado.localizacion_id === localizacion.id ? 'selected' : '' %>><%= localizacion.localizacion %></option>
+                                <% }); %>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="cargo_id">Cargo</label>
+                            <select name="cargo_id" id="cargo_id" class="form-control" required>
+                                <!-- Aquí debes generar las opciones en el servidor -->
+                                <!-- Suponiendo que has pasado cargos a la vista -->
+                                <% cargos.forEach(function(cargo) { %>
+                                    <option value="<%= cargo.id %>" <%= empleado.cargo_id === cargo.id ? 'selected' : '' %>><%= cargo.cargo %></option>
+                                <% }); %>
+                            </select>
+                        </div>
 
-            <div class="col-md-5">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title">Agregar Nuevo Empleado</h5>
-                    </div>
-                    <div class="card-body">
-                        <form action="/updateempleados/<%= empleados.id %>"method="post">
-                            <div class="form-group">
-                                <label for="nombre">Nombre</label>
-                                <input type="text" name="nombres" id="nombres" class="form-control" placeholder="Nombre del empleado" >
-                            </div>
-                            <div class="form-group">
-                                <label for="apellido">Apellido</label>
-                                <input type="text" name="apellidos" id="apellidos" class="form-control" placeholder="Apellido del empleado" >
-                            </div>
-                            <div class="form-group">
-                                <label for="identificacion">Identificacion</label>
-                                <input type="number" name="identificacion" id="identificacion" class="form-control" placeholder="Identificacion" >
-                            </div>
-                            <div class="form-group">
-                                <label for="localizacion_id">Localizacion_id</label>
-                                <input type="number" name="localizacion_id" id="localizacion_id" class="form-control" placeholder="localizacion_id" >
-                            </div>
-                            <div class="form-group">
-                                <label for="cargo_id">cargo_id</label>
-                                <input type="number" name="cargo_id" id="cargo_id" class="form-control" placeholder="cargo_id" >
-                            </div>
-
-                            <div class="form-group form-check">
-                                <input type="checkbox" name="activo" id="activo" class="form-check-input" value="1">
-                                <label for="activo" class="form-check-label">Activo</label>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Editar Empleado</button>
-                        </form>
-                    </div>
+                        <div class="form-group form-check">
+                            <input type="checkbox" name="active" id="active" class="form-check-input" value="1" <%= empleado.active ? 'checked' : '' %>>
+                            <label for="active" class="form-check-label">Activo</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Actualizar Empleado</button>
+                    </form>
                 </div>
             </div>
-
-      
+        </div>
+    </div>
 
 </body>
 </html>
+

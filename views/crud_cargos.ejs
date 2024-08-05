@@ -15,6 +15,16 @@
             color: white;
         }
     </style>
+
+<script>
+    function confirmDelete(event) {
+        event.preventDefault(); // Evita que el enlace se siga
+        var result = confirm("¿Estás seguro de que quieres eliminar este registro?");
+        if (result) {
+            window.location.href = event.target.href; // Redirige al enlace si se confirma
+        }
+    }
+</script>
 </head>
 
 <body>
@@ -46,7 +56,7 @@
                                 <td><%= cargo.activo ? 'Sí' : 'No' %></td>
                                 <td>
                                     <a href="/editcargos/<%=cargo.id %>" class="btn btn-warning btn-sm">Editar</a>
-                                    <a href="/deletecargos/<%=cargo.id %>" class="btn btn-danger btn-sm">Eliminar</a>
+                                    <a href="/deletecargos/<%=cargo.id %>" class="btn btn-danger btn-sm" onclick="confirmDelete(event)">Eliminar</a>
                                 </td>
                             </tr>
                         <% }); %>
